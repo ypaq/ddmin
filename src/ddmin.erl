@@ -27,8 +27,11 @@ ddmin(Test, Circumstances) when is_function(Test, 1), is_list(Circumstances) ->
 ddmin(Test, Circumstances, N) when N =< length(Circumstances), length(Circumstances) >= 2 ->
   %% split given circumstances into subsets and check if maybe a smaller subset fails as well
   Subsets = split(Circumstances, length(Circumstances) div N),
+  %% compute candidates
+  Candidates = [ddmin(Test, Subset, Circumstances, N) || Subset <- Subsets],
   %% pick smallest subset
-  lists:min([ddmin(Test, Subset, Circumstances, N) || Subset <- Subsets]);
+  lists:foldr(fun(C, Acc) -> case length(C) < length(Acc) of true -> C; _ -> Acc end end, 
+              hd(Candidates), tl(Candidates));
 ddmin(_, Circumstances, _) ->
   Circumstances.
 
@@ -93,6 +96,22 @@ bar_test() ->
   % variation of foo_test 
   ?assertEqual([2], ddmin(Test, [1,2,3,4,5,6,7,8,9,10,11])).
 
+baz([2,_,4|_]) -> throw(expected_error);
+baz([_|T]) -> baz(T);
+baz([]) -> done.
+
+baz_test() ->
+  Test = 
+    fun(Circumstances) ->
+      try 
+        baz(Circumstances),
+        pass
+      catch _:expected_error -> fail;
+            _:_ -> unresolved
+      end
+    end,
+  % variation of foo_test 
+  ?assertMatch([2,_,4], ddmin(Test, [1,2,3,4,5,6,7,8,9,10,11])).
 
 foo_loop(N) when N < 0 -> 
   error(expected_error);
@@ -119,8 +138,6 @@ foo_loop_test() ->
   % this test checks for the smallest input sequence of messages to produce the expected error
   ?assertEqual([nay], ddmin(Test, [yay,yay,nay,yay,nay,nay,yay,nay,nay])).
 
-
 -endif.
-
 
 
