@@ -57,6 +57,7 @@ In order to run ddmin you only have to implement a test function. The test funct
               end.
 
 During execution ddmin applies `TestFun` to each delta seeking the smallest failing input. 
+It is important that the test function returns the same input for the same result.
 Note that the test function must have the following type:
 
     -type circumstance() :: term().
