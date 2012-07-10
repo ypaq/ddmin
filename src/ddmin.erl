@@ -15,14 +15,27 @@
 %%      unresolved - with the given circumstances the test produced an unexpected error 
 -type test() :: fun(([circumstance()] | []) -> pass | fail | unresolved).
 
+-define(RESULTS_CACHE, ddmin_results_cache).
+
 %% @doc The ddmin function. Takes a test function and 
-%%      a list of possible inputs for the test function.
+%%      a list of possible inputs for the test function and
+%%      returns the minimal combination of circumstances 
+%%      to make the test function fail.
 -spec ddmin(test(), [circumstance()]) -> [circumstance()].
 ddmin(Test, Circumstances) when is_function(Test, 1), is_list(Circumstances) ->
   %% Test function must fulfill the following preconditions
   pass = Test([]),
   fail = Test(Circumstances),  
-  ddmin(Test, Circumstances, 2).
+
+  %% setup ETS table for results cache
+  ets:new(?RESULTS_CACHE, [named_table, set, private]),
+  
+  Result = ddmin(Test, Circumstances, 2),
+
+  %% cleanup after ddmin run
+  ets:delete(?RESULTS_CACHE),
+
+  Result.
 
 ddmin(Test, Circumstances, N) when N =< length(Circumstances), length(Circumstances) >= 2 ->
   %% split given circumstances into subsets and check if maybe a smaller subset fails as well
@@ -37,7 +50,7 @@ ddmin(_, Circumstances, _) ->
 
 ddmin(Test, Subset, Circumstances, N) ->
   Complement = lists:subtract(Circumstances, Subset),
-  case {Test(Subset), Test(Complement)} of
+  case {get_cached(Test, Subset), get_cached(Test, Complement)} of
     {fail, _} -> ddmin(Test, Subset, 2);
     {_, fail} -> ddmin(Test, Complement, max(N-1, 2));
     _ when N < length(Circumstances) -> ddmin(Test, Circumstances, min(length(Circumstances), 2*N));
@@ -52,6 +65,13 @@ split(Circumstances, Len) when Len =< length(Circumstances) ->
 split(Rest, _Len) ->
   [Rest].
 
+get_cached(Test, Circumstances) ->
+  case ets:lookup(?RESULTS_CACHE, Circumstances) of
+    [] -> Result = Test(Circumstances),
+      ets:insert(?RESULTS_CACHE, {Circumstances, Result}),
+      Result;
+    [Result|_] -> Result
+  end.
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
