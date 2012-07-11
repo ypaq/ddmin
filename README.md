@@ -102,6 +102,11 @@ Build with:
 
     $ ./rebar compile
 
+Run tests with:
+    
+    $ ./rebar eunit
+
+
 Feedback
 --------
 
