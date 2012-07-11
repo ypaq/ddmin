@@ -79,7 +79,7 @@ How is that different from what QuickCheck/PropEr does?
 
 It's not that different. The quickcheck approach lets you write generators for input data and 
 automatically reduces this generated data to find minimal counterexamples that fail the properties
-you have defined (see [1](http://www.quviq.com/)[2](http://proper.softlab.ntua.gr/)). 
+you have defined (see [[1](http://www.quviq.com/), [2](http://proper.softlab.ntua.gr/)]). 
 For the quickcheck approach you need a clear understanding how 
 to model the inner workings of what you want to test. 
 
@@ -88,7 +88,7 @@ Generally this input is too large to make a reasonable test case, hence you want
 You can use delta debugging on any input data that you can chunk, including: 
 
 * plain text (e.g. lines, words, characters),
-* structured data like HTML/XML tags, binary formats, computer programs (see [3](http://blog.regehr.org/archives/749)),
+* structured data like HTML/XML tags, binary formats, computer programs (see [[3](http://blog.regehr.org/archives/749)]),
 * messages sent to an Erlang process collected from a trace to facilitate a record-replay approach. 
   This approach is show-cased with a simple test (see `test/record_replay_test.erl`).
 
@@ -97,7 +97,7 @@ It remains up to the user to find a reasonable chunking method for input data.
 Furthermore, a minimal test case can help to improve the quickcheck generators and properties you have defined so far.
 
 More information on Delta Debugging can be found on the page of the
-Software Engineering Chair of Andreas Zeller [4](http://www.st.cs.uni-saarland.de/dd/). 
+Software Engineering Chair of Andreas Zeller [[4](http://www.st.cs.uni-saarland.de/dd/)]. 
 
 
 How to build?
