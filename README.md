@@ -83,8 +83,8 @@ you have defined (see [[1](http://www.quviq.com/), [2](http://proper.softlab.ntu
 For the quickcheck approach you need a clear understanding how 
 to model the inner workings of what you want to test. 
 
-When using Delta Debugging you have the input already at hand.
-Generally this input is too large to make a reasonable test case, hence you want to reduce it.
+When using delta debugging you have the input already at hand.
+Generally, this input is too large to make a reasonable test case, hence you want to reduce it.
 You can use delta debugging on any input data that you can chunk, including: 
 
 * plain text (e.g. lines, words, characters),
@@ -96,7 +96,7 @@ It remains up to the user to find a reasonable chunking method for input data.
 
 Furthermore, a minimal test case can help to improve the quickcheck generators and properties you have defined so far.
 
-More information on Delta Debugging can be found on the page of the
+More information on other delta debugging related topics can be found on the page of the
 Software Engineering Chair of Andreas Zeller [[4](http://www.st.cs.uni-saarland.de/dd/)]. 
 
 
