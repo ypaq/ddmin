@@ -1,5 +1,5 @@
 %% @doc Naive recorder of messages to a process using dbg tracer.
-%%      Records all received messages to a pid and 
+%%      Records all received messages by a pid and 
 %%      stores them ordered by arrivial in an ETS.
 -module(naive_recorder).
 
@@ -44,8 +44,7 @@ get_recorded_messages(#recorder{table_id=Tid}) ->
 foo_loop() ->
   receive 
     {hello,_} -> foo_loop();
-    bye -> ok;
-    _ -> throw(exepected_error)
+    bye -> ok
   end.
 
 simple_test() ->

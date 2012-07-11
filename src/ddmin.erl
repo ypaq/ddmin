@@ -139,7 +139,7 @@ bar_test() ->
   % variation of foo_test 
   ?assertEqual([2], ddmin(Test, [1,2,3,4,5,6,7,8,9,10,11])).
 
-baz([2,_,4|_]) -> throw(expected_error);
+baz([2,_,_,5|_]) -> throw(expected_error);
 baz([_|T]) -> baz(T);
 baz([]) -> done.
 
@@ -154,7 +154,7 @@ baz_test() ->
       end
     end,
   % variation of foo_test 
-  ?assertMatch([2,_,4], ddmin(Test, [1,2,3,4,5,6,7,8,9,10,11])).
+  ?assertMatch([2,_,_,5], ddmin(Test, [1,2,3,4,5,6,7,8,9,10,11])).
 
 foo_loop(N) when N < 0 -> 
   error(expected_error);

@@ -57,7 +57,7 @@ In order to run ddmin you only have to implement a test function. The test funct
               end.
 
 During execution ddmin applies `TestFun` to each delta seeking the smallest failing input. 
-It is important that the test function returns the same input for the same result.
+It is important that the test function returns for the same input the same result.
 Note that the test function must have the following type:
 
     -type circumstance() :: term().
@@ -79,21 +79,26 @@ How is that different from what QuickCheck/PropEr does?
 
 It's not that different. The quickcheck approach lets you write generators for input data and 
 automatically reduces this generated data to find minimal counterexamples that fail the properties
-you have defined. For the quickcheck approach you need a clear understanding how to model 
-the inner workings of what you want to test. 
+you have defined (see [1](http://www.quviq.com/)[2](http://proper.softlab.ntua.gr/)). 
+For the quickcheck approach you need a clear understanding how 
+to model the inner workings of what you want to test. 
 
-The key difference is that you have the input already at hand.
+When using Delta Debugging you have the input already at hand.
 Generally this input is too large to make a reasonable test case, hence you want to reduce it.
 You can use delta debugging on any input data that you can chunk, including: 
 
 * plain text (e.g. lines, words, characters),
-* structured data like HTML/XML tags, binary formats, computer programs (see [1]),
+* structured data like HTML/XML tags, binary formats, computer programs (see [3](http://blog.regehr.org/archives/749)),
 * messages sent to an Erlang process collected from a trace to facilitate a record-replay approach. 
   This approach is show-cased with a simple test (see `test/record_replay_test.erl`).
 
-It remains up to the user to find a reasonable chunking method for input data.
+It remains up to the user to find a reasonable chunking method for input data. 
 
 Furthermore, a minimal test case can help to improve the quickcheck generators and properties you have defined so far.
+
+More information on Delta Debugging can be found on the page of the
+Software Engineering Chair of Andreas Zeller [4](http://www.st.cs.uni-saarland.de/dd/). 
+
 
 How to build?
 -------------
@@ -114,6 +119,8 @@ Let me know if you find this interesting. Feedback is more than welcome.
 
 Links
 ----- 
-
- \[1\] [Parallelizing Delta Debugging](http://blog.regehr.org/archives/749)
+\[1\] [QuviQ Homepage](http://www.quviq.com/)
+\[2\] [PropEr Homepage](http://proper.softlab.ntua.gr/)
+\[3\] [Parallelizing Delta Debugging](http://blog.regehr.org/archives/749)
+\[4\] [Delta Debugging](http://www.st.cs.uni-saarland.de/dd/) 
 
