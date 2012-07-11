@@ -82,20 +82,33 @@ automatically reduces this generated data to find minimal counterexamples that f
 you have defined. For the quickcheck approach you need a clear understanding how to model 
 the inner workings of what you want to test. 
 
-Delta debugging allows a more exploratory approach. 
+The key difference is that you have the input already at hand.
+Generally this input is too large to make a reasonable test case, hence you want to reduce it.
 You can use delta debugging on any input data that you can chunk, including: 
 
 * plain text (e.g. lines, words, characters),
-* structured data like HTML/XML tags, YAML, binary formats,
-* messages to a certain process collected from a trace to facilitate a record-replay approach. 
+* structured data like HTML/XML tags, binary formats, computer programs (see [1]),
+* messages sent to an Erlang process collected from a trace to facilitate a record-replay approach. 
   This approach is show-cased with a simple test (see `test/record_replay_test.erl`).
 
 It remains up to the user to find a reasonable chunking method for input data.
 
 Furthermore, a minimal test case can help to improve the quickcheck generators and properties you have defined so far.
 
+How to build?
+-------------
+
+Build with: 
+
+    $ ./rebar compile
+
 Feedback
 --------
 
 Let me know if you find this interesting. Feedback is more than welcome.
+
+Links
+----- 
+
+ \[1\] [Parallelizing Delta Debugging](http://blog.regehr.org/archives/749)
 

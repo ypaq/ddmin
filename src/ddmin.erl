@@ -28,7 +28,7 @@ ddmin(Test, Circumstances) when is_function(Test, 1), is_list(Circumstances) ->
   fail = Test(Circumstances),  
 
   %% setup ETS table for results cache
-  ets:new(?RESULTS_CACHE, [named_table, set, private]),
+  ets:new(?RESULTS_CACHE, [named_table, set, public]),
   
   Result = ddmin(Test, Circumstances, 2),
 
@@ -41,7 +41,10 @@ ddmin(Test, Circumstances, N) when N =< length(Circumstances), length(Circumstan
   %% split given circumstances into subsets and check if maybe a smaller subset fails as well
   Subsets = split(Circumstances, length(Circumstances) div N),
   %% compute candidates
-  Candidates = [ddmin(Test, Subset, Circumstances, N) || Subset <- Subsets],
+  
+  %% collect results in parallel
+  Candidates = pmap(fun(Subset) -> ddmin(Test, Subset, Circumstances, N) end, Subsets),
+  
   %% pick smallest subset
   lists:foldr(fun(C, Acc) -> case length(C) < length(Acc) of true -> C; _ -> Acc end end, 
               hd(Candidates), tl(Candidates));
@@ -72,6 +75,26 @@ get_cached(Test, Circumstances) ->
       Result;
     [Result|_] -> Result
   end.
+
+%% Joe Armstrong's pmap implementation
+%% %% http://www.nabble.com/Erlang-on-the-niagara-tt4774880.html
+pmap(F, L) ->
+  S = self(),
+  Pids = lists:map(fun(I) ->
+          spawn(fun() -> do_f(S, F, I) end)
+      end, L), 
+  gather(Pids).
+
+gather([H|T]) ->
+  receive
+    {H, Ret} -> [Ret|gather(T)]
+  end;
+gather([]) ->
+  []. 
+
+do_f(Parent, F, I) ->
+  Parent ! {self(), (catch F(I))}.
+
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
