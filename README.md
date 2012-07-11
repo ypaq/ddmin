@@ -119,8 +119,8 @@ Let me know if you find this interesting. Feedback is more than welcome.
 
 Links
 ----- 
-\[1\] [QuviQ Homepage](http://www.quviq.com/)
-\[2\] [PropEr Homepage](http://proper.softlab.ntua.gr/)
-\[3\] [Parallelizing Delta Debugging](http://blog.regehr.org/archives/749)
-\[4\] [Delta Debugging](http://www.st.cs.uni-saarland.de/dd/) 
+* \[1\] [QuviQ Homepage](http://www.quviq.com/)
+* \[2\] [PropEr Homepage](http://proper.softlab.ntua.gr/)
+* \[3\] [Parallelizing Delta Debugging](http://blog.regehr.org/archives/749)
+* \[4\] [Delta Debugging](http://www.st.cs.uni-saarland.de/dd/) 
 
