@@ -77,11 +77,10 @@ Run ddmin like this:
 How is that different from what QuickCheck/PropEr does?
 --------------------------------------------------------
 
-It's not that different. The quickcheck approach lets you write generators for input data and 
+The quickcheck approach lets you write generators for input data and 
 automatically reduces this generated data to find minimal counterexamples that fail the properties
-you have defined (see [[1](http://www.quviq.com/), [2](http://proper.softlab.ntua.gr/)]). 
-For the quickcheck approach you need a clear understanding how 
-to model the inner workings of what you want to test. 
+you have defined (see [[1](http://www.quviq.com/), [2](http://proper.softlab.ntua.gr/)]). In fact, 
+PropEr uses ddmin as reduction method in its shrinker module. 
 
 When using delta debugging you have the input already at hand.
 Generally, this input is too large to make a reasonable test case, hence you want to reduce it.
@@ -122,5 +121,5 @@ Links
 * \[1\] [QuviQ Homepage](http://www.quviq.com/)
 * \[2\] [PropEr Homepage](http://proper.softlab.ntua.gr/)
 * \[3\] [Parallelizing Delta Debugging](http://blog.regehr.org/archives/749)
-* \[4\] [Delta Debugging](http://www.st.cs.uni-saarland.de/dd/) 
+* \[4\] [Delta Debugging Homepage](http://www.st.cs.uni-saarland.de/dd/) 
 
